@@ -31,6 +31,12 @@ app.get('/search', function (req, res) {
             return row.car_brand;
         });
         res.send({ status: 'ok', car_brand: response });
+        let htmlString = '<ul>';
+        tables.forEach(function(row) {
+            htmlString = htmlString + '<li>' + row.car_brand + '</li>';
+        });
+        htmlString = htmlString + '</ul>';
+        res.send(htmlString)
       });
     } else {
       res.send({ status: 'error', message: 'invalid input' });

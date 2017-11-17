@@ -1,24 +1,28 @@
-// 'use strict';
+'use strict';
 
-// const xml = new XMLHttpRequest();
-// const body = document.querySelector('tbody');
-// const url = 'http://localhost:3000'
+const xml = new XMLHttpRequest();
+const body = document.querySelector('tbody');
+const url = 'http://localhost:3000'
 
-// function ajax(method, response, callback, data){
-//     xml.open(method, url + response, true);
-//     httpRequest.onreadystatechange = function() {
-//         if (httpRequest.readyState === 4){
-//             console.log('Data received');
-//             var data = httpRequest.responseText;
-//             callback(JSON.parse(data)); 
-//         }
-//     }
-//     xml.onload = function(){
-//         body.innerHTML = xml.response;
-//     }
-//     xml.send();
+let allDiv = document.getElementsByClassName('container');
+let button = document.getElementById('submit');
+let input = document.getElementById('search');
+
+function ajax(method, callback, data){
+    xml.open(method, url, true);
+    xml.onreadystatechange = function() {
+        if (xml.readyState === 4){
+            console.log('Data received');
+            var data = xml.responseText;
+            callback(JSON.parse(data)); 
+        }
+    }
+    xml.onload = function(){
+        body.innerHTML = xml.response;
+    }
+    xml.send();
     
-// }
+}
 
 // // function getData(){
 // //     ajax('GET', '/all', handleData);
@@ -28,9 +32,9 @@
 
 
 
-// function handleData(data) {
-//     console.log('handleData return with' + data);
-// };
+function handleData(data) {
+    console.log('handleData return with' + data);
+};
 
 // let button = document.querySelector('button');
 // button.addEventListener('click', function(){
@@ -40,11 +44,7 @@
 //     ajax('GET', '/search', handleData);
 // });
 
-'use strict';
 
-let allDiv = document.getElementsByClassName('container');
-let button = document.getElementById('submit');
-let input = document.getElementById('search');
 
 button.addEventListener("click", click);
 input.addEventListener("keypress", function(e) {
@@ -55,18 +55,7 @@ input.addEventListener("keypress", function(e) {
 });
 
 function getData(searchWord){
-    let httpRequest = new XMLHttpRequest();
-    var url = "localhost:3000"; 
-    httpRequest.open('GET', url);
-    httpRequest.onreadystatechange = function() {
-        if (httpRequest.readyState === 4){
-            console.log('Data received');
-            var data = httpRequest.responseText;
-            callback(JSON.parse(data)); 
-        }
-    }
-    httpRequest.send();
-    console.log('Request sended');
+    ajax('GET', handleData, searchWord);
 }
 
 function callback(parsedData) {
@@ -77,37 +66,13 @@ function callback(parsedData) {
 }
 
 function getStory(source) {
-    // console.log(source.multimedia);
     return console.log('getStory cucc');
-    // return {"header": source.headline.print_headline,
-    //         "snippet": source.snippet,
-    //         "publication date": source.pub_date,
-    //         "webUrl": source.web_url,
-    //         "picture": source.multimedia.length > 0 ? source.multimedia[1].url : ''
-        //  };
 }
 
 function tableCreator(array){
     let table = document.createElement ('ul');
     array.forEach(function(element) {
-        // console.log(element.picture);
         let newRow = document.createElement('li');
-        table.appendChild(newRow);
-        let header = document.createElement('ul');
-        let snippet = document.createElement('ul');
-        let pubDate = document.createElement('ul');
-        let linkImage = document.createElement('img');
-        let permalink = document.createElement('a');
-        permalink.textContent = element['header'];
-        permalink.setAttribute('href', element['webUrl']);
-        permalink.setAttribute('target', 'new');
-        linkImage.setAttribute('src', 'http://www.nytimes.com/' + element['picture']);
-        header.appendChild(permalink);
-        header.appendChild(linkImage);
-        snippet.textContent = element['snippet'];
-        pubDate.textContent = element['publication date'];
-        newRow.appendChild(header);
-        newRow.appendChild(snippet);
         newRow.appendChild(pubDate);
     });
     // console.log(allDiv);
@@ -120,6 +85,7 @@ function click() {
     console.log("click event");
     allDiv[0].innerHTML = "";
     var searchWord = document.getElementById('search').value;
+    console.log(searchWord);
     if (searchWord !== "") {
         getData(searchWord);
     };
