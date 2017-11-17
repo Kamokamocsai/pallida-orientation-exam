@@ -78,9 +78,7 @@ function tableCreator(array){
     });
     // console.log(allDiv);
     allDiv[0].appendChild(table);
-    
-
-}
+};
 
 function click() {
     console.log("click event");

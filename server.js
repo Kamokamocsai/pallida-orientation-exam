@@ -10,7 +10,7 @@ let validator = require('./assets/validator');
 let conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "gameskami",
+    password: "root",
     database: "licence_plate"
 });
 
@@ -43,37 +43,52 @@ app.get('/search', function (req, res) {
     }
   });
 
-// app.get('/search/:brand', function(req, res) {
-//     conn.query('SELECT car_brand car_model color year FROM licence_plates', function(error, rows){
-//         if(error) {
-//             console.log(error.toString());
-//         }
-//         let htmlString = '<tr>';
-//         rows.forEach(function(row) {
-//             htmlString = htmlString + `<tr><td>${row.car_brand}</td>
-//                                       <td>${row.car_model}</td>
-//                                       <td>${row.color}</td>
-//                                       <td>${row.year}</td>
-//                                       </tr>`;
-//         });
-//         htmlString = htmlString + '</tr>';
-//         res.send(htmlString)
-//         });
-// });
-
-app.get('/search', function(req, res) {
-  let searchParam = Object.keys(req.query)[0]
-  let searchValue = req.query[searchParam]
-  let data = []
-  conn.query('SELECT * FROM licence_plates WHERE ' +searchParam +"="+ searchValue, function(error, result, fields){
-      if(error) {
-          console.log(error.toString());
-      }
-      result.forEach(function(element) {
-        data.push(element.searchValue);
+app.get('/color', function (req, res) {
+    if (true) { // validator.validator() volt az if-ben
+      conn.query('SELECT color FROM licence_plates', function (err, tables) {
+        if (err) {
+            throw err;
+        }
+        let response = tables.map(function (row) {
+            return row.color;
+        });
+        res.send({ status: 'ok', car_color: response });
+        let htmlString = '<ul>';
+        tables.forEach(function(row) {
+            htmlString = htmlString + '<li>' + row.color + '</li>';
+        });
+        htmlString = htmlString + '</ul>';
+        res.send(htmlString)
       });
-      res.send(data);      
-})});
+    } else {
+      res.send({ status: 'error', message: 'invalid input' });
+    }
+  });
+
+app.get('/search/:brand', function(req, res) {
+    let data = [];
+    let queryString = `SELECT * FROM licence_plates WHERE car_brand='${req.params.brand}'`;
+    connection.query(queryString, function(err, result, fileds) {
+        result.forEach(function(element){
+        data.push({'licence': element.plate, 'brand': element.car_brand, 'model': element.car_model, 'year': element.year, 'color': element.color});
+        });
+        res.send({'result': 'OK', 'cars': data});
+    });
+});
+
+// app.get('/search', function(req, res) {
+//   let searchParam = Object.keys(req.query)[0]
+//   let searchValue = req.query[searchParam]
+//   let data = []
+//   conn.query('SELECT * FROM licence_plates WHERE ' +searchParam +"="+ searchValue, function(error, result, fields){
+//       if(error) {
+//           console.log(error.toString());
+//       }
+//       result.forEach(function(element) {
+//         data.push(element.searchValue);
+//       });
+//       res.send(data);      
+// })});
 
 
 conn.connect(function(err){

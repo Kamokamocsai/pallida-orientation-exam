@@ -8,19 +8,8 @@
 //         }
 //     }
 //     let isValid = function (data) {
-//         var result;
-//         if (checkTextFunc > 3 && checkScaleFunc >= 10 && checkEmailFunc) {
-//           result = true;
-//         } else {
-//           result = false;
-//         }
-//         return result;
-//       };
-    
-//       return {
-//         validator: isValid
-//       };
-// })();
+//         let result;
+
 
 let validator = () => true;
 
