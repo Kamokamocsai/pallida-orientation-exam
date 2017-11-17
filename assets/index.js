@@ -8,13 +8,14 @@ let allDiv = document.getElementsByClassName('container');
 let button = document.getElementById('submit');
 let input = document.getElementById('search');
 
-function ajax(method, callback, data){
-    xml.open(method, url, true);
+function ajax(method, request, callback, data){
+    xml.open(method, url + request, true);
     xml.onreadystatechange = function() {
         if (xml.readyState === 4){
             console.log('Data received');
-            var data = xml.responseText;
-            callback(JSON.parse(data)); 
+            // var data = xml.responseText;
+            console.log(data);
+            callback(data); 
         }
     }
     xml.onload = function(){
@@ -55,7 +56,7 @@ input.addEventListener("keypress", function(e) {
 });
 
 function getData(searchWord){
-    ajax('GET', handleData, searchWord);
+    ajax('GET', '/search', handleData, searchWord);
 }
 
 function callback(parsedData) {
@@ -87,6 +88,6 @@ function click() {
     var searchWord = document.getElementById('search').value;
     console.log(searchWord);
     if (searchWord !== "") {
-        getData(searchWord);
+        ajax('GET', '/search', handleData, searchWord);        
     };
 };

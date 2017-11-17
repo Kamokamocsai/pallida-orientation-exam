@@ -10,7 +10,7 @@ let validator = require('./assets/validator');
 let conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "root",
+    password: "gameskami",
     database: "licence_plate"
 });
 
@@ -43,23 +43,17 @@ app.get('/search', function (req, res) {
     }
   });
 
-// app.get('/all', function(req, res) {
-//     conn.query('SELECT book_name, aut_name, cate_descrip, pub_name,\
-//                 book_price FROM book_mast\
-//                 JOIN author ON author.aut_id=book_mast.aut_id\
-//                 JOIN category ON book_mast.cate_id=category.cate_id \
-//                 JOIN newpublisher ON book_mast.pub_id=newpublisher.pub_id', 
-//                 function(error, rows){
+// app.get('/search/:brand', function(req, res) {
+//     conn.query('SELECT car_brand car_model color year FROM licence_plates', function(error, rows){
 //         if(error) {
 //             console.log(error.toString());
 //         }
 //         let htmlString = '<tr>';
 //         rows.forEach(function(row) {
-//             htmlString = htmlString + `<tr><td>${row.book_name}</td>
-//                                       <td>${row.aut_name}</td>
-//                                       <td>${row.cate_descrip}</td>
-//                                       <td>${row.pub_name}</td>
-//                                       <td>${row.book_price}</td>
+//             htmlString = htmlString + `<tr><td>${row.car_brand}</td>
+//                                       <td>${row.car_model}</td>
+//                                       <td>${row.color}</td>
+//                                       <td>${row.year}</td>
 //                                       </tr>`;
 //         });
 //         htmlString = htmlString + '</tr>';
