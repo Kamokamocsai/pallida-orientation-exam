@@ -10,7 +10,7 @@ let validator = require('./assets/validator');
 let conn = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "gameskami",
+    password: "root",
     database: "licence_plate"
 });
 
@@ -61,20 +61,19 @@ app.get('/search', function (req, res) {
 //         });
 // });
 
-// app.get('/search', function(req, res) {
-//   let searchParam = Object.keys(req.query)[0]
-//   let searchValue = req.query[searchParam]
-//   let data = []
-//   conn.query('SELECT * FROM book_mast where ' +searchParam +"="+ searchValue, function(error, result, fields){
-//       if(error) {
-//           console.log(error.toString());
-//       }
-//       result.forEach(function(element) {
-//         data.push(element.book_name)
-//       });
-//       res.send(data)
-      
-// })});
+app.get('/search', function(req, res) {
+  let searchParam = Object.keys(req.query)[0]
+  let searchValue = req.query[searchParam]
+  let data = []
+  conn.query('SELECT * FROM licence_plates WHERE ' +searchParam +"="+ searchValue, function(error, result, fields){
+      if(error) {
+          console.log(error.toString());
+      }
+      result.forEach(function(element) {
+        data.push(element.searchValue);
+      });
+      res.send(data);      
+})});
 
 
 conn.connect(function(err){
